@@ -26,6 +26,8 @@ create table if not exists bureau_members (
   id uuid primary key default gen_random_uuid(),
   role text not null,
   name text not null,
+  photo_url text,
+  member_since int,
   sort_order int not null default 0,
   created_at timestamptz not null default now()
 );

@@ -52,9 +52,15 @@ export async function getBureau(): Promise<BureauMember[]> {
   const { data } = await supabase
     .from("bureau_members")
     .select("*")
+    .order("member_since", { ascending: true, nullsFirst: false })
     .order("sort_order", { ascending: true });
   if (!data || !data.length) return staticBureau;
-  return data.map((m) => ({ role: m.role, name: m.name }));
+  return data.map((m) => ({
+    role: m.role,
+    name: m.name,
+    photoUrl: m.photo_url ?? undefined,
+    memberSince: m.member_since ?? undefined,
+  }));
 }
 
 export async function getEvents(): Promise<Event[]> {

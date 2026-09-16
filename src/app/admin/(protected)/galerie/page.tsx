@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import { addPhoto, deletePhoto } from "./actions";
+import { addPhoto, updatePhoto, deletePhoto } from "./actions";
 
 export const metadata: Metadata = { title: "Galerie — Administration" };
 export const dynamic = "force-dynamic";
@@ -49,20 +49,41 @@ export default async function AdminGaleriePage() {
 
       <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {photos.map((photo) => (
-          <div key={photo.id} className="overflow-hidden rounded-md border border-ink-900/10 bg-white">
+          <form
+            key={photo.id}
+            action={updatePhoto}
+            className="overflow-hidden rounded-md border border-ink-900/10 bg-white"
+          >
+            <input type="hidden" name="id" value={photo.id} />
             <div className="relative aspect-[4/3]">
               <Image src={photo.url} alt={photo.caption || "Photo AJTRA"} fill className="object-cover" />
             </div>
-            <div className="p-4">
-              <p className="truncate text-sm text-ink-600">{photo.caption || "Sans légende"}</p>
-              <form action={deletePhoto} className="mt-2">
-                <input type="hidden" name="id" value={photo.id} />
-                <button type="submit" className="text-sm font-semibold text-red-600 hover:underline">
+            <div className="flex flex-col gap-2 p-4">
+              <div className="flex flex-col gap-1.5">
+                <label className={labelClass}>Légende</label>
+                <input name="caption" defaultValue={photo.caption} className={inputClass} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className={labelClass}>Remplacer l&apos;image</label>
+                <input name="image" type="file" accept="image/*" className={inputClass} />
+              </div>
+              <div className="mt-1 flex gap-3">
+                <button
+                  type="submit"
+                  className="rounded-sm border border-forest-600 px-4 py-2 text-sm font-bold text-forest-600 hover:bg-forest-100"
+                >
+                  Enregistrer
+                </button>
+                <button
+                  type="submit"
+                  formAction={deletePhoto}
+                  className="rounded-sm px-4 py-2 text-sm font-semibold text-red-600 hover:underline"
+                >
                   Supprimer
                 </button>
-              </form>
+              </div>
             </div>
-          </div>
+          </form>
         ))}
       </section>
 

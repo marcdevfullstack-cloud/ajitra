@@ -40,6 +40,8 @@ export const site: SiteSettings = {
 export type BureauMember = {
   role: string;
   name: string;
+  photoUrl?: string;
+  memberSince?: number;
 };
 
 export const bureau: BureauMember[] = [
