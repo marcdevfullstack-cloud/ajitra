@@ -15,7 +15,7 @@ export const revalidate = 30;
 
 export default async function Home() {
   const [site, events] = await Promise.all([getSiteSettings(), getEvents()]);
-  const upcomingEvents = [...events].sort((a, b) => a.isoDate.localeCompare(b.isoDate)).slice(0, 3);
+  const upcomingEvents = events.slice(0, 3);
 
   return (
     <>

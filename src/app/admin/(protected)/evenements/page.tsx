@@ -11,7 +11,7 @@ const inputClass =
 const labelClass = "text-xs font-semibold text-ink-600";
 
 export default async function AdminEvenementsPage() {
-  const events = [...(await getEvents())].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+  const events = await getEvents();
 
   return (
     <div>
@@ -40,6 +40,10 @@ export default async function AdminEvenementsPage() {
           <div className="flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="place">Lieu</label>
             <input id="place" name="place" required className={inputClass} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="sortOrder">Ordre d&apos;affichage</label>
+            <input id="sortOrder" name="sortOrder" type="number" defaultValue={0} className={inputClass} />
           </div>
           <div className="flex flex-col gap-1.5 sm:col-span-2">
             <label className={labelClass} htmlFor="description">Description</label>
@@ -99,6 +103,10 @@ export default async function AdminEvenementsPage() {
                 <div className="flex flex-col gap-1.5">
                   <label className={labelClass}>Lieu</label>
                   <input name="place" defaultValue={event.place} required className={inputClass} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className={labelClass}>Ordre d&apos;affichage</label>
+                  <input name="sortOrder" type="number" defaultValue={event.sortOrder ?? 0} className={inputClass} />
                 </div>
                 <div className="flex flex-col gap-1.5 sm:col-span-2">
                   <label className={labelClass}>Description</label>

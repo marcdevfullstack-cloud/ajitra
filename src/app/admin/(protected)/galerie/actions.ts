@@ -31,6 +31,7 @@ export async function addPhoto(formData: FormData) {
   const { error } = await supabase.from("gallery_photos").insert({
     url,
     caption: String(formData.get("caption") || ""),
+    sort_order: Number(formData.get("sortOrder") || 0),
   });
   if (error) throw new Error(error.message);
 
@@ -46,6 +47,7 @@ export async function updatePhoto(formData: FormData) {
 
   const update: Record<string, unknown> = {
     caption: String(formData.get("caption") || ""),
+    sort_order: Number(formData.get("sortOrder") || 0),
   };
   if (file && file.size > 0) {
     update.url = await uploadPhoto(supabase, file);

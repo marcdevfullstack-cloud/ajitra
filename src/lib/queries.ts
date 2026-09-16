@@ -66,7 +66,11 @@ export async function getBureau(): Promise<BureauMember[]> {
 export async function getEvents(): Promise<Event[]> {
   if (!hasSupabase) return staticEvents;
   const supabase = createPublicClient();
-  const { data } = await supabase.from("events").select("*").order("iso_date", { ascending: true });
+  const { data } = await supabase
+    .from("events")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("iso_date", { ascending: true });
   if (!data) return staticEvents;
   return data.map((e) => ({
     id: e.id,
@@ -77,6 +81,7 @@ export async function getEvents(): Promise<Event[]> {
     place: e.place,
     description: e.description,
     image: e.image_url || "/images/logo.jpg",
+    sortOrder: e.sort_order ?? 0,
   }));
 }
 
@@ -86,6 +91,7 @@ export async function getGallery(): Promise<GalleryPhoto[]> {
   const { data } = await supabase
     .from("gallery_photos")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (!data) return staticGallery;
   return data.map((g) => ({ src: g.url, caption: g.caption }));

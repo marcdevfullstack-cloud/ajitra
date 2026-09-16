@@ -10,7 +10,6 @@ export const revalidate = 30;
 
 export default async function EvenementsPage() {
   const events = await getEvents();
-  const sorted = [...events].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
 
   return (
     <section className="py-16 sm:py-20">
@@ -23,8 +22,8 @@ export default async function EvenementsPage() {
           />
         </Reveal>
         <div className="mt-12 flex flex-col gap-8">
-          {sorted.length ? (
-            sorted.map((event, i) => (
+          {events.length ? (
+            events.map((event, i) => (
               <Reveal key={event.id} delay={i * 80} className="scroll-mt-24" id={event.id}>
                 <EventCard event={event} priority={i === 0} reverse={i % 2 === 1} />
               </Reveal>

@@ -62,6 +62,7 @@ export type Event = {
   place: string;
   description: string;
   image: string;
+  sortOrder?: number;
 };
 
 export const events: Event[] = [

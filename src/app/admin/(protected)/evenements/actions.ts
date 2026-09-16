@@ -36,6 +36,7 @@ export async function createEvent(formData: FormData) {
     place: String(formData.get("place") || ""),
     description: String(formData.get("description") || ""),
     image_url: imageUrl || "/images/logo.jpg",
+    sort_order: Number(formData.get("sortOrder") || 0),
   });
   if (error) throw new Error(error.message);
 
@@ -56,6 +57,7 @@ export async function updateEvent(formData: FormData) {
     time: String(formData.get("time") || "") || null,
     place: String(formData.get("place") || ""),
     description: String(formData.get("description") || ""),
+    sort_order: Number(formData.get("sortOrder") || 0),
   };
   if (newImageUrl) update.image_url = newImageUrl;
 

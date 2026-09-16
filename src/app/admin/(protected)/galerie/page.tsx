@@ -10,13 +10,14 @@ const inputClass =
   "rounded-sm border border-ink-900/15 bg-white px-3 py-2 text-sm focus:border-forest-500 focus:outline-none";
 const labelClass = "text-xs font-semibold text-ink-600";
 
-type Photo = { id: string; url: string; caption: string };
+type Photo = { id: string; url: string; caption: string; sort_order: number };
 
 export default async function AdminGaleriePage() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("gallery_photos")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   const photos = (data ?? []) as Photo[];
 
@@ -35,6 +36,10 @@ export default async function AdminGaleriePage() {
           <div className="flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="caption">Légende</label>
             <input id="caption" name="caption" className={inputClass} placeholder="Sortie détente à Grand-Bassam" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="sortOrder">Ordre d&apos;affichage</label>
+            <input id="sortOrder" name="sortOrder" type="number" defaultValue={0} className={inputClass} />
           </div>
           <div className="sm:col-span-2">
             <button
@@ -66,6 +71,10 @@ export default async function AdminGaleriePage() {
               <div className="flex flex-col gap-1.5">
                 <label className={labelClass}>Remplacer l&apos;image</label>
                 <input name="image" type="file" accept="image/*" className={inputClass} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className={labelClass}>Ordre d&apos;affichage</label>
+                <input name="sortOrder" type="number" defaultValue={photo.sort_order ?? 0} className={inputClass} />
               </div>
               <div className="mt-1 flex gap-3">
                 <button
