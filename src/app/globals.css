@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-sand-50: #ffffff;
+  --color-sand-100: #f5f6f2;
+  --color-sand-200: #e8eae2;
+  --color-ink-900: #1c2018;
+  --color-ink-600: #4b5245;
+  --color-ink-400: #7c8271;
+
+  --color-forest-900: #0a2e19;
+  --color-forest-800: #0f3d22;
+  --color-forest-700: #15532c;
+  --color-forest-600: #1d6b3a;
+  --color-forest-500: #2a8249;
+  --color-forest-400: #4a9a5f;
+  --color-forest-100: #e3f0e6;
+
+  --color-bark-700: #6b4527;
+  --color-bark-500: #8a6038;
+
+  --color-gold-500: #c98a2c;
+  --color-gold-400: #dba24f;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-sand-50: var(--color-sand-50);
+  --color-sand-100: var(--color-sand-100);
+  --color-sand-200: var(--color-sand-200);
+  --color-ink-900: var(--color-ink-900);
+  --color-ink-600: var(--color-ink-600);
+  --color-ink-400: var(--color-ink-400);
+  --color-forest-900: var(--color-forest-900);
+  --color-forest-800: var(--color-forest-800);
+  --color-forest-700: var(--color-forest-700);
+  --color-forest-600: var(--color-forest-600);
+  --color-forest-500: var(--color-forest-500);
+  --color-forest-400: var(--color-forest-400);
+  --color-forest-100: var(--color-forest-100);
+  --color-bark-700: var(--color-bark-700);
+  --color-bark-500: var(--color-bark-500);
+  --color-gold-500: var(--color-gold-500);
+  --color-gold-400: var(--color-gold-400);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-karla);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-sand-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), Georgia, serif;
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--color-forest-500);
+  color: white;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
