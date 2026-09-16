@@ -25,7 +25,7 @@ export default async function EvenementsPage() {
         <div className="mt-12 flex flex-col gap-8">
           {sorted.length ? (
             sorted.map((event, i) => (
-              <Reveal key={event.id} delay={i * 80}>
+              <Reveal key={event.id} delay={i * 80} className="scroll-mt-24" id={event.id}>
                 <EventCard event={event} priority={i === 0} reverse={i % 2 === 1} />
               </Reveal>
             ))

@@ -7,7 +7,7 @@ import InfoStrip from "@/components/InfoStrip";
 import Reveal from "@/components/Reveal";
 import Manifesto from "@/components/Manifesto";
 import AnniversaryBanner from "@/components/AnniversaryBanner";
-import FeaturedEvent from "@/components/FeaturedEvent";
+import EventMiniCard from "@/components/EventMiniCard";
 import { site as siteConstants } from "@/lib/data";
 import { getSiteSettings, getEvents } from "@/lib/queries";
 
@@ -15,7 +15,7 @@ export const revalidate = 30;
 
 export default async function Home() {
   const [site, events] = await Promise.all([getSiteSettings(), getEvents()]);
-  const nextEvent = [...events].sort((a, b) => a.isoDate.localeCompare(b.isoDate))[0];
+  const upcomingEvents = [...events].sort((a, b) => a.isoDate.localeCompare(b.isoDate)).slice(0, 3);
 
   return (
     <>
@@ -83,8 +83,32 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* Featured event */}
-      {nextEvent ? <FeaturedEvent event={nextEvent} /> : null}
+      {/* Événements */}
+      {upcomingEvents.length ? (
+        <section className="py-16 sm:py-20">
+          <Container>
+            <Reveal>
+              <SectionHeader
+                eyebrow="Vie associative"
+                title="Nos prochains événements"
+                align="center"
+              />
+            </Reveal>
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {upcomingEvents.map((event, i) => (
+                <Reveal key={event.id} delay={i * 100}>
+                  <EventMiniCard event={event} />
+                </Reveal>
+              ))}
+            </div>
+            <Reveal delay={200} className="mt-10 flex justify-center">
+              <Button href="/evenements" variant="ghost">
+                Tous les événements
+              </Button>
+            </Reveal>
+          </Container>
+        </section>
+      ) : null}
 
       {/* Join banner */}
       <section className="bg-forest-700 py-16 text-white sm:py-20">
