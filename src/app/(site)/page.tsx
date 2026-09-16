@@ -50,39 +50,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Info strip */}
-      <section className="py-12">
-        <Container>
-          <Reveal>
-            <InfoStrip meetings={site.meetings} />
-          </Reveal>
-        </Container>
-      </section>
-
-      <AnniversaryBanner />
-
-      <Manifesto brong={site.slogan.brong} fr={site.slogan.fr} />
-
-      {/* Mission teaser */}
-      <section className="bg-sand-100 py-16 sm:py-20">
-        <Container className="grid gap-10 md:grid-cols-2 md:items-start">
-          <Reveal>
-            <SectionHeader
-              eyebrow="Qui sommes-nous"
-              title="Une amicale, un seul village, une même force"
-            />
-          </Reveal>
-          <Reveal delay={100} className="space-y-4 text-ink-600">
-            {site.mission.slice(0, 2).map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-            <Button href="/a-propos" variant="ghost">
-              En savoir plus →
-            </Button>
-          </Reveal>
-        </Container>
-      </section>
-
       {/* Événements */}
       {upcomingEvents.length ? (
         <section className="py-16 sm:py-20">
@@ -109,6 +76,39 @@ export default async function Home() {
           </Container>
         </section>
       ) : null}
+
+      {/* Info strip */}
+      <section className="bg-sand-100 py-12">
+        <Container>
+          <Reveal>
+            <InfoStrip meetings={site.meetings} />
+          </Reveal>
+        </Container>
+      </section>
+
+      <AnniversaryBanner />
+
+      <Manifesto brong={site.slogan.brong} fr={site.slogan.fr} />
+
+      {/* Mission teaser */}
+      <section className="py-16 sm:py-20">
+        <Container className="grid gap-10 md:grid-cols-2 md:items-start">
+          <Reveal>
+            <SectionHeader
+              eyebrow="Qui sommes-nous"
+              title="Une amicale, un seul village, une même force"
+            />
+          </Reveal>
+          <Reveal delay={100} className="space-y-4 text-ink-600">
+            {site.mission.slice(0, 2).map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+            <Button href="/a-propos" variant="ghost">
+              En savoir plus →
+            </Button>
+          </Reveal>
+        </Container>
+      </section>
 
       {/* Join banner */}
       <section className="bg-forest-700 py-16 text-white sm:py-20">
