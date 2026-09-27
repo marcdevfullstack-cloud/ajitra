@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { deleteAdhesion } from "./actions";
+import { convertAdhesionToMember } from "../membres/actions";
 
 export const metadata: Metadata = { title: "Adhésions — Administration" };
 export const dynamic = "force-dynamic";
@@ -13,6 +14,7 @@ type Adhesion = {
   residence: string | null;
   relation: string | null;
   message: string | null;
+  status: string;
   created_at: string;
 };
 
@@ -34,7 +36,18 @@ export default async function AdminAdhesionsPage() {
           <div key={a.id} className="rounded-md border border-ink-900/10 bg-white p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="font-display text-lg font-semibold text-ink-900">{a.full_name}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-display text-lg font-semibold text-ink-900">{a.full_name}</p>
+                  {a.status === "converti" ? (
+                    <span className="rounded-full bg-forest-100 px-2.5 py-0.5 text-xs font-semibold text-forest-700">
+                      Membre
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-gold-400/20 px-2.5 py-0.5 text-xs font-semibold text-bark-700">
+                      Nouveau
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-ink-600">
                   {new Date(a.created_at).toLocaleString("fr-FR", {
                     dateStyle: "long",
@@ -42,12 +55,29 @@ export default async function AdminAdhesionsPage() {
                   })}
                 </p>
               </div>
-              <form action={deleteAdhesion}>
-                <input type="hidden" name="id" value={a.id} />
-                <button type="submit" className="text-sm font-semibold text-red-600 hover:underline">
-                  Supprimer
-                </button>
-              </form>
+              <div className="flex flex-none gap-3">
+                {a.status !== "converti" ? (
+                  <form action={convertAdhesionToMember}>
+                    <input type="hidden" name="adhesionId" value={a.id} />
+                    <input type="hidden" name="fullName" value={a.full_name} />
+                    <input type="hidden" name="phone" value={a.phone} />
+                    <input type="hidden" name="email" value={a.email ?? ""} />
+                    <input type="hidden" name="residence" value={a.residence ?? ""} />
+                    <button
+                      type="submit"
+                      className="rounded-sm border border-forest-600 px-3 py-1.5 text-sm font-bold text-forest-600 hover:bg-forest-100"
+                    >
+                      Convertir en membre
+                    </button>
+                  </form>
+                ) : null}
+                <form action={deleteAdhesion}>
+                  <input type="hidden" name="id" value={a.id} />
+                  <button type="submit" className="text-sm font-semibold text-red-600 hover:underline">
+                    Supprimer
+                  </button>
+                </form>
+              </div>
             </div>
 
             <dl className="mt-4 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">

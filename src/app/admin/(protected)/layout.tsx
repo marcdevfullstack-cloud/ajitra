@@ -4,6 +4,7 @@ import { signOut } from "./actions";
 
 const links = [
   { href: "/admin", label: "Tableau de bord" },
+  { href: "/admin/membres", label: "Membres" },
   { href: "/admin/adhesions", label: "Adhésions" },
   { href: "/admin/evenements", label: "Événements" },
   { href: "/admin/bureau", label: "Bureau" },

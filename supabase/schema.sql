@@ -61,17 +61,38 @@ create table if not exists adhesions (
   residence text,
   relation text,
   message text,
+  status text not null default 'nouveau',
+  created_at timestamptz not null default now()
+);
+
+create table if not exists members (
+  id uuid primary key default gen_random_uuid(),
+  member_no int generated always as identity,
+  full_name text not null,
+  phone text not null,
+  email text,
+  residence text,
+  profession text,
+  formation text,
+  skills text,
+  interest_domain text,
+  join_date date not null default current_date,
+  status text not null default 'actif' check (status in ('actif', 'inactif', 'suspendu')),
+  responsibilities text,
+  notes text,
   created_at timestamptz not null default now()
 );
 
 -- ---------- Row Level Security ----------
 -- Lecture publique (le site est public), écriture réservée aux comptes connectés (l'admin).
+-- Exception : "members" est une table strictement interne (aucune lecture publique).
 
 alter table site_settings enable row level security;
 alter table bureau_members enable row level security;
 alter table events enable row level security;
 alter table gallery_photos enable row level security;
 alter table adhesions enable row level security;
+alter table members enable row level security;
 
 create policy "public read site_settings" on site_settings for select using (true);
 create policy "public read bureau_members" on bureau_members for select using (true);
@@ -91,8 +112,13 @@ create policy "public insert adhesions" on adhesions for insert
   with check (true);
 create policy "auth read adhesions" on adhesions for select
   using (auth.role() = 'authenticated');
+create policy "auth update adhesions" on adhesions for update
+  using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 create policy "auth delete adhesions" on adhesions for delete
   using (auth.role() = 'authenticated');
+
+create policy "auth all members" on members for all
+  using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
 
 -- ---------- Stockage des photos ----------
 

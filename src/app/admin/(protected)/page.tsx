@@ -8,15 +8,17 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
-  const [events, bureau, gallery, adhesionsCount] = await Promise.all([
+  const [events, bureau, gallery, membersCount, adhesionsCount] = await Promise.all([
     getEvents(),
     getBureau(),
     getGallery(),
-    supabase.from("adhesions").select("id", { count: "exact", head: true }),
+    supabase.from("members").select("id", { count: "exact", head: true }).eq("status", "actif"),
+    supabase.from("adhesions").select("id", { count: "exact", head: true }).eq("status", "nouveau"),
   ]);
 
   const cards = [
-    { href: "/admin/adhesions", label: "Demandes d'adhésion", count: adhesionsCount.count ?? 0 },
+    { href: "/admin/membres", label: "Membres actifs", count: membersCount.count ?? 0 },
+    { href: "/admin/adhesions", label: "Demandes d'adhésion en attente", count: adhesionsCount.count ?? 0 },
     { href: "/admin/evenements", label: "Événements", count: events.length },
     { href: "/admin/bureau", label: "Membres du bureau", count: bureau.length },
     { href: "/admin/galerie", label: "Photos en galerie", count: gallery.length },
@@ -27,7 +29,7 @@ export default async function AdminDashboard() {
       <h1 className="text-2xl font-bold text-ink-900">Tableau de bord</h1>
       <p className="mt-1 text-ink-600">Gérez le contenu du site AJTRA.</p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {cards.map((card) => (
           <Link
             key={card.href}
